@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DOB · İç Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple: #5b21b6;
+  --purple-mid: #7c3aed;
+  --purple-light: #ede9fe;
+  --purple-pale: #f5f3ff;
+  --text: #0f0a1e;
+  --text-2: #4b5563;
+  --text-3: #9ca3af;
+  --border: #e5e7eb;
+  --bg: #f9fafb;
+  --white: #ffffff;
+  --success: #059669;
+  --warning: #d97706;
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* NAV */
+nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 32px;
+  text-decoration: none;
+}
+.nav-logo-icon {
+  width: 34px; height: 34px;
+  background: var(--purple);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 16px; font-weight: 600;
+}
+.nav-logo-text { line-height: 1.2; }
+.nav-logo-text .brand { font-size: 13px; font-weight: 600; color: var(--text); }
+.nav-logo-text .sub { font-size: 10px; color: var(--text-3); letter-spacing: .05em; text-transform: uppercase; }
+.nav-links { display: flex; gap: 2px; flex: 1; }
+.nav-link {
+  padding: 6px 14px;
+  font-size: 13.5px;
+  color: var(--text-2);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all .15s;
+  font-weight: 400;
+}
+.nav-link:hover { background: var(--bg); color: var(--text); }
+.nav-link.active { background: var(--purple-pale); color: var(--purple); font-weight: 500; }
+.nav-right {
+  display: flex; align-items: center; gap: 12px; margin-left: auto;
+}
+.nav-search {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--text-3);
+  width: 200px;
+}
+.nav-search span { font-family: 'DM Mono', monospace; font-size: 11px; margin-left: auto; }
+.nav-bell {
+  width: 34px; height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 15px;
+  position: relative;
+}
+.nav-bell::after {
+  content: '';
+  width: 7px; height: 7px;
+  background: var(--purple);
+  border-radius: 50%;
+  position: absolute;
+  top: 6px; right: 6px;
+  border: 1.5px solid white;
+}
+.nav-user {
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer;
+}
+.nav-avatar {
+  width: 34px; height: 34px;
+  background: var(--purple);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 500; color: white;
+}
+.nav-user-info { line-height: 1.3; }
+.nav-user-info .name { font-size: 13px; font-weight: 500; }
+.nav-user-info .role { font-size: 11px; color: var(--text-3); }
+
+/* MAIN */
+main { max-width: 1280px; margin: 0 auto; padding: 28px 32px; display: flex; flex-direction: column; gap: 24px; }
+
+/* HERO */
+.hero {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px 48px;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 40px;
+  align-items: center;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--purple-pale);
+  color: var(--purple);
+  font-size: 11px; font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.hero-badge::before { content: '⚡'; font-size: 12px; }
+.hero-date { color: var(--text-3); font-size: 13px; margin-left: 8px; }
+.hero h1 {
+  font-size: 52px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.hero-desc {
+  font-size: 15px;
+  color: var(--text-2);
+  line-height: 1.7;
+  max-width: 480px;
+  margin-bottom: 28px;
+}
+.hero-btns { display: flex; gap: 10px; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--purple);
+  color: white;
+  padding: 11px 22px;
+  border-radius: var(--radius-sm);
+  font-size: 14px; font-weight: 500;
+  text-decoration: none;
+  border: none; cursor: pointer;
+  transition: opacity .15s;
+}
+.btn-primary:hover { opacity: .88; }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent;
+  color: var(--text);
+  padding: 11px 22px;
+  border-radius: var(--radius-sm);
+  font-size: 14px; font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn-secondary:hover { background: var(--bg); }
+
+/* HERO WIDGET */
+.hero-widget {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.widget-clock {
+  display: flex; align-items: flex-start; justify-content: space-between;
+}
+.clock-time { font-size: 38px; font-weight: 300; letter-spacing: -1px; font-family: 'DM Mono', monospace; }
+.clock-loc { font-size: 11px; color: var(--text-3); margin-top: 4px; letter-spacing: .05em; text-transform: uppercase; }
+.clock-weather {
+  display: flex; align-items: center; gap: 6px;
+  background: white; border: 1px solid var(--border);
+  border-radius: 20px; padding: 6px 12px;
+  font-size: 13px; font-weight: 500;
+}
+.widget-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.metric { background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; }
+.metric-val { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; }
+.metric-label { font-size: 10px; color: var(--text-3); margin-top: 2px; letter-spacing: .07em; text-transform: uppercase; }
+
+/* ROW 2 - cards */
+.cards-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+/* DUYURULAR */
+.duyurular-grid { display: grid; grid-template-columns: 380px 1fr 280px; gap: 24px; }
+
+.section-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+.card-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 6px;
+}
+.card-title { font-size: 17px; font-weight: 600; }
+.card-link { font-size: 13px; color: var(--purple); text-decoration: none; display: flex; align-items: center; gap: 4px; }
+.card-sub { font-size: 12px; color: var(--text-3); margin-bottom: 16px; }
+
+/* Filter pills */
+.filter-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.pill {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all .15s;
+  background: transparent;
+  color: var(--text-2);
+}
+.pill.active { background: var(--purple); color: white; border-color: var(--purple); }
+
+/* Duyuru list */
+.duyuru-list { display: flex; flex-direction: column; gap: 1px; }
+.duyuru-item {
+  padding: 11px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background .12s;
+  border-left: 3px solid transparent;
+}
+.duyuru-item:hover { background: var(--bg); }
+.duyuru-item.selected { background: var(--purple-pale); border-left-color: var(--purple); }
+.duyuru-cat {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--purple);
+  background: var(--purple-pale);
+  padding: 2px 7px; border-radius: 4px;
+  display: inline-block; margin-bottom: 4px;
+}
+.duyuru-cat.sistem { color: #059669; background: #ecfdf5; }
+.duyuru-cat.ik { color: #d97706; background: #fffbeb; }
+.duyuru-cat.etkinlik { color: #2563eb; background: #eff6ff; }
+.duyuru-meta { font-size: 11px; color: var(--text-3); margin-left: 8px; }
+.duyuru-title { font-size: 13.5px; font-weight: 500; line-height: 1.4; margin-top: 2px; }
+
+/* Detail panel */
+.detail-panel { display: flex; flex-direction: column; gap: 14px; }
+.detail-cat-row { display: flex; align-items: center; gap: 8px; }
+.detail-title { font-size: 22px; font-weight: 600; line-height: 1.3; }
+.detail-body { font-size: 14px; color: var(--text-2); line-height: 1.75; }
+.detail-btns { display: flex; gap: 8px; margin-top: 4px; }
+
+/* Takvim */
+.takvim-list { display: flex; flex-direction: column; gap: 10px; }
+.takvim-item { display: flex; gap: 14px; align-items: flex-start; }
+.takvim-date {
+  min-width: 44px; height: 44px;
+  background: var(--purple-pale);
+  border-radius: var(--radius-sm);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.takvim-date .day { font-size: 18px; font-weight: 600; color: var(--purple); line-height: 1; }
+.takvim-date .mon { font-size: 9px; color: var(--purple); letter-spacing: .08em; text-transform: uppercase; margin-top: 1px; }
+.takvim-date.today { background: var(--purple); }
+.takvim-date.today .day, .takvim-date.today .mon { color: white; }
+.takvim-info .title { font-size: 13.5px; font-weight: 500; }
+.takvim-info .meta { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+/* Anket */
+.anket-title { font-size: 14px; font-weight: 500; margin-bottom: 12px; line-height: 1.4; }
+.anket-opts { display: flex; flex-direction: column; gap: 6px; }
+.anket-opt {
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .15s;
+  position: relative; overflow: hidden;
+}
+.anket-opt:hover { border-color: var(--purple); }
+.anket-opt.voted { border-color: var(--purple); color: var(--purple); font-weight: 500; }
+.anket-opt .bar {
+  position: absolute; left: 0; top: 0; height: 100%;
+  background: var(--purple-pale); z-index: 0;
+  transition: width .4s ease;
+}
+.anket-opt span { position: relative; z-index: 1; }
+.anket-count { font-size: 11px; color: var(--text-3); margin-top: 8px; }
+
+/* ROW 3 */
+.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+/* Bilgi bankası */
+.bb-list { display: flex; flex-direction: column; gap: 2px; margin-bottom: 12px; }
+.bb-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background .12s;
+}
+.bb-item:hover { background: var(--bg); }
+.bb-item-left { display: flex; align-items: center; gap: 10px; }
+.bb-dot { width: 4px; height: 20px; border-radius: 2px; background: var(--purple); }
+.bb-name { font-size: 14px; font-weight: 500; }
+.bb-count { font-size: 12px; color: var(--text-3); font-family: 'DM Mono', monospace; }
+.bb-search {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 9px 13px;
+  font-size: 13px; color: var(--text-3);
+}
+
+/* Eğitimler */
+.egitim-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+.egitim-item { padding: 13px; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.egitim-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.egitim-title { font-size: 13.5px; font-weight: 500; }
+.egitim-badge {
+  font-size: 10px; font-weight: 600; letter-spacing: .06em;
+  padding: 2px 8px; border-radius: 4px;
+  background: #fef2f2; color: #dc2626;
+}
+.egitim-badge.done { background: #ecfdf5; color: #059669; }
+.egitim-meta { font-size: 12px; color: var(--text-3); margin-bottom: 8px; }
+.progress-bar {
+  height: 4px; background: var(--border); border-radius: 2px; overflow: hidden;
+}
+.progress-fill { height: 100%; background: var(--purple); border-radius: 2px; transition: width .5s; }
+.progress-fill.done { background: var(--success); }
+
+/* Vardiya */
+.vardiya-week { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 16px; }
+.vday {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 8px;
+  text-align: center;
+  font-size: 12px;
+}
+.vday.today { background: var(--purple); color: white; border-color: var(--purple); }
+.vday .dow { font-size: 10px; letter-spacing: .05em; text-transform: uppercase; opacity: .7; margin-bottom: 4px; }
+.vday .date { font-size: 20px; font-weight: 600; line-height: 1; margin-bottom: 6px; }
+.vday .shift { font-size: 10px; line-height: 1.4; }
+.vday .ekip { font-size: 9px; opacity: .7; margin-top: 2px; }
+.vday.izin { background: var(--bg); }
+.vday.izin .date { opacity: .5; }
+.vardiya-legend { display: flex; gap: 12px; font-size: 12px; color: var(--text-3); margin-bottom: 12px; }
+.leg { display: flex; align-items: center; gap: 5px; }
+.leg-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* Hızlı bağlantılar */
+.hizli-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.hizli-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+.hizli-item {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 16px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer; transition: all .15s;
+  text-decoration: none; color: var(--text-2);
+}
+.hizli-item:hover { background: var(--purple-pale); border-color: var(--purple); color: var(--purple); }
+.hizli-icon {
+  width: 38px; height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+  background: var(--white);
+}
+.hizli-item:hover .hizli-icon { border-color: var(--purple); background: var(--purple-pale); }
+.hizli-label { font-size: 12px; text-align: center; font-weight: 500; }
+
+/* Animations */
+@keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+.hero { animation: fadeUp .4s ease both; }
+.cards-row { animation: fadeUp .4s ease .08s both; }
+.duyurular-grid { animation: fadeUp .4s ease .16s both; }
+.row3 { animation: fadeUp .4s ease .24s both; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-icon">D</div>
+    <div class="nav-logo-text">
+      <div class="brand">Tombank</div>
+      <div class="sub">DOB · İÇ PORTAL</div>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link active" href="#">Ana Sayfa</a>
+    <a class="nav-link" href="#">Duyurular</a>
+    <a class="nav-link" href="#">Bilgi Bankası</a>
+    <a class="nav-link" href="#">Vardiya Planlama</a>
+    <a class="nav-link" href="#">Eğitimler</a>
+    <a class="nav-link" href="#">SSS</a>
+    <a class="nav-link" href="#">İletişim</a>
+  </div>
+  <div class="nav-right">
+    <div class="nav-search">
+      🔍 Portalda ara...
+      <span>⌘K</span>
+    </div>
+    <div class="nav-bell">🔔</div>
+    <div class="nav-user">
+      <div class="nav-avatar">MA</div>
+      <div class="nav-user-info">
+        <div class="name">Merve Aydın</div>
+        <div class="role">Operasyon · Şube 034</div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <div>
+        <span class="hero-badge">TOMBANK İÇ İLETİŞİM</span>
+        <span class="hero-date" id="heroDate"></span>
+      </div>
+      <h1>DOB · DOB<br>Hakkında Her Şey</h1>
+      <p class="hero-desc">Operasyon, bilgi ve iletişim — ekibinizin günlük işi için tek kapı. Duyuruları takip edin, vardiyanızı görün, prosedürleri saniyeler içinde bulun.</p>
+      <div class="hero-btns">
+        <a class="btn-primary" href="#">Bilgi Bankası'nda Ara →</a>
+        <a class="btn-secondary" href="#">Güncel Duyurular</a>
+      </div>
+    </div>
+    <div class="hero-widget">
+      <div class="widget-clock">
+        <div>
+          <div class="clock-time" id="clock">--:--</div>
+          <div class="clock-loc">İSTANBUL · GMT+3</div>
+        </div>
+        <div class="clock-weather">☀️ 18°</div>
+      </div>
+      <div class="widget-metrics">
+        <div class="metric">
+          <div class="metric-val">247</div>
+          <div class="metric-label">Aktif Kullanıcı</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val">12</div>
+          <div class="metric-label">Yeni Duyuru</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val">3</div>
+          <div class="metric-label">Bekleyen Onay</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DUYURULAR BÖLGESİ -->
+  <section class="duyurular-grid">
+
+    <!-- Liste -->
+    <div class="section-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Güncel Duyurular</div>
+          <div class="card-sub">Son 14 gün · 4 öğe</div>
+        </div>
+        <a class="card-link" href="#">Tümünü gör ›</a>
+      </div>
+      <div class="filter-pills">
+        <button class="pill active" onclick="filterDuyuru('tumu', this)">Tümü</button>
+        <button class="pill" onclick="filterDuyuru('politika', this)">Politika</button>
+        <button class="pill" onclick="filterDuyuru('sistem', this)">Sistem</button>
+        <button class="pill" onclick="filterDuyuru('ik', this)">İK</button>
+        <button class="pill" onclick="filterDuyuru('etkinlik', this)">Etkinlik</button>
+      </div>
+      <div class="duyuru-list">
+        <div class="duyuru-item selected" data-cat="politika" onclick="selectDuyuru(this, 0)">
+          <div><span class="duyuru-cat">POLİTİKA</span><span class="duyuru-meta">22 Nis 2026</span></div>
+          <div class="duyuru-title">Yeni KVKK uyum prosedürü yürürlüğe giriyor</div>
+        </div>
+        <div class="duyuru-item" data-cat="sistem" onclick="selectDuyuru(this, 1)">
+          <div><span class="duyuru-cat sistem">SİSTEM</span><span class="duyuru-meta">21 Nis 2026</span></div>
+          <div class="duyuru-title">Core bankacılık bakım penceresi — Pazar 02:00–04:00</div>
+        </div>
+        <div class="duyuru-item" data-cat="ik" onclick="selectDuyuru(this, 2)">
+          <div><span class="duyuru-cat ik">İK</span><span class="duyuru-meta">19 Nis 2026</span></div>
+          <div class="duyuru-title">Mayıs dönemi performans görüşmeleri takvimi</div>
+        </div>
+        <div class="duyuru-item" data-cat="etkinlik" onclick="selectDuyuru(this, 3)">
+          <div><span class="duyuru-cat etkinlik">ETKİNLİK</span><span class="duyuru-meta">17 Nis 2026</span></div>
+          <div class="duyuru-title">Tombank Teknoloji Günü — kayıtlar açık</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detay -->
+    <div class="section-card detail-panel" id="detailPanel">
+      <div class="detail-cat-row">
+        <span class="duyuru-cat" id="detailCat">POLİTİKA</span>
+        <span style="font-size:12px;color:var(--text-3)" id="detailMeta">22 Nis 2026 · 4 dk okuma</span>
+      </div>
+      <div class="detail-title" id="detailTitle">Yeni KVKK uyum prosedürü yürürlüğe giriyor</div>
+      <div class="detail-body" id="detailBody">Tüm operasyon birimleri için güncellenen veri işleme adımları 1 Mayıs itibarıyla zorunlu hale geliyor.<br><br>Lütfen konuyla ilgili ekibinizle birlikte gözden geçirme toplantısı planlayın. Sorularınız için Uyum ekibine dahili 4412'den ulaşabilirsiniz.</div>
+      <div class="detail-btns">
+        <button class="btn-primary">Tam metni oku →</button>
+        <button class="btn-secondary">Ekiple paylaş</button>
+      </div>
+    </div>
+
+    <!-- Takvim + Anket -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="section-card">
+        <div class="card-title" style="margin-bottom:16px;">Bu Hafta</div>
+        <div class="takvim-list">
+          <div class="takvim-item">
+            <div class="takvim-date today"><div class="day">24</div><div class="mon">Nis</div></div>
+            <div class="takvim-info">
+              <div class="title">Operasyon Sync</div>
+              <div class="meta">🕙 10:00 · Zoom</div>
+            </div>
+          </div>
+          <div class="takvim-item">
+            <div class="takvim-date"><div class="day">25</div><div class="mon">Nis</div></div>
+            <div class="takvim-info">
+              <div class="title">Yeni başlayan oryantasyonu</div>
+              <div class="meta">🕑 14:00 · 12. Kat</div>
+            </div>
+          </div>
+          <div class="takvim-item">
+            <div class="takvim-date"><div class="day">30</div><div class="mon">Nis</div></div>
+            <div class="takvim-info">
+              <div class="title">Çeyrek sonu kapanış</div>
+              <div class="meta">🕐 Tüm gün</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div style="font-size:10px;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">📊 Haftanın Anketi</div>
+        <div class="anket-title">2026 H2 için tercih ettiğiniz çalışma modeli?</div>
+        <div class="anket-opts">
+          <div class="anket-opt" onclick="vote(this, 48)"><div class="bar" style="width:48%"></div><span>Hibrit (3 ofis / 2 uzak)</span></div>
+          <div class="anket-opt" onclick="vote(this, 32)"><div class="bar" style="width:32%"></div><span>Tam ofis</span></div>
+          <div class="anket-opt" onclick="vote(this, 20)"><div class="bar" style="width:20%"></div><span>Uzak ağırlıklı</span></div>
+        </div>
+        <div class="anket-count">411 katılımcı</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROW 3: Bilgi + Eğitim + Vardiya -->
+  <section class="row3">
+
+    <!-- Bilgi Bankası -->
+    <div class="section-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Bilgi Bankası</div>
+          <div class="card-sub">Kategoriye göre</div>
+        </div>
+        <a class="card-link" href="#">Tümü ›</a>
+      </div>
+      <div class="bb-list">
+        <div class="bb-item">
+          <div class="bb-item-left"><div class="bb-dot" style="background:#7c3aed"></div><div class="bb-name">Operasyon</div></div>
+          <div class="bb-count">142</div>
+        </div>
+        <div class="bb-item">
+          <div class="bb-item-left"><div class="bb-dot" style="background:#5b21b6"></div><div class="bb-name">Kredi & Risk</div></div>
+          <div class="bb-count">88</div>
+        </div>
+        <div class="bb-item">
+          <div class="bb-item-left"><div class="bb-dot" style="background:#8b5cf6"></div><div class="bb-name">Dijital Kanallar</div></div>
+          <div class="bb-count">67</div>
+        </div>
+        <div class="bb-item">
+          <div class="bb-item-left"><div class="bb-dot" style="background:#a78bfa"></div><div class="bb-name">Uyum & Hukuk</div></div>
+          <div class="bb-count">54</div>
+        </div>
+      </div>
+      <div class="bb-search">🔍 Hızlı arama: prosedür, form, müşteri açılış...</div>
+    </div>
+
+    <!-- Eğitimlerim -->
+    <div class="section-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Eğitimlerim</div>
+          <div class="card-sub">2 zorunlu · 1 isteğe bağlı</div>
+        </div>
+        <a class="card-link" href="#">Tümü ›</a>
+      </div>
+      <div class="egitim-list">
+        <div class="egitim-item">
+          <div class="egitim-top">
+            <div class="egitim-title">KVKK 2026 Güncellemeleri</div>
+            <span class="egitim-badge">ZORUNLU</span>
+          </div>
+          <div class="egitim-meta">🕐 45 dk · 60% tamamlandı</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+        </div>
+        <div class="egitim-item">
+          <div class="egitim-top">
+            <div class="egitim-title">Dolandırıcılık Önleme Temel</div>
+            <span class="egitim-badge done">✓ TAMAMLANDI</span>
+          </div>
+          <div class="egitim-meta">🕐 30 dk · Tamamlandı</div>
+          <div class="progress-bar"><div class="progress-fill done" style="width:100%"></div></div>
+        </div>
+        <div class="egitim-item">
+          <div class="egitim-top">
+            <div class="egitim-title">Liderlik Atölyesi: Geri Bildirim</div>
+            <span class="egitim-badge">ZORUNLU</span>
+          </div>
+          <div class="egitim-meta">🕐 1 sa 20 dk · 0% tamamlandı</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+        </div>
+      </div>
+      <button class="btn-primary" style="width:100%;justify-content:center;">Devam et</button>
+    </div>
+
+    <!-- Vardiya -->
+    <div class="section-card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Vardiya — Bu Hafta</div>
+          <div class="card-sub">27 Nis – 1 May · Şube 034</div>
+        </div>
+        <a class="card-link" href="#">Plan ›</a>
+      </div>
+      <div class="vardiya-week">
+        <div class="vday today">
+          <div class="dow">Pzt</div>
+          <div class="date">27</div>
+          <div class="shift">08:00 –<br>16:00</div>
+          <div class="ekip">A EKİBİ</div>
+        </div>
+        <div class="vday">
+          <div class="dow">Sal</div>
+          <div class="date">28</div>
+          <div class="shift">08:00 –<br>16:00</div>
+          <div class="ekip">A EKİBİ</div>
+        </div>
+        <div class="vday izin">
+          <div class="dow">Çar</div>
+          <div class="date">29</div>
+          <div class="shift">İzin</div>
+          <div class="ekip">—</div>
+        </div>
+        <div class="vday">
+          <div class="dow">Per</div>
+          <div class="date">30</div>
+          <div class="shift">12:00 –<br>20:00</div>
+          <div class="ekip">B EKİBİ</div>
+        </div>
+        <div class="vday">
+          <div class="dow">Cum</div>
+          <div class="date">1</div>
+          <div class="shift">12:00 –<br>20:00</div>
+          <div class="ekip">B EKİBİ</div>
+        </div>
+      </div>
+      <div class="vardiya-legend">
+        <div class="leg"><div class="leg-dot" style="background:var(--purple)"></div>Çalışma</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--border)"></div>İzin</div>
+      </div>
+      <button class="btn-secondary" style="width:100%;justify-content:center;">Değişim talebi</button>
+    </div>
+  </section>
+
+  <!-- HIZLI BAĞLANTILAR -->
+  <section class="section-card">
+    <div class="hizli-header">
+      <div class="card-title">Hızlı Bağlantılar</div>
+      <a class="card-link" href="#">Düzenle</a>
+    </div>
+    <div class="hizli-grid">
+      <a class="hizli-item" href="#">
+        <div class="hizli-icon">📄</div>
+        <div class="hizli-label">Maaş Bordrosu</div>
+      </a>
+      <a class="hizli-item" href="#">
+        <div class="hizli-icon">📅</div>
+        <div class="hizli-label">İzin Talebi</div>
+      </a>
+      <a class="hizli-item" href="#">
+        <div class="hizli-icon">⚙️</div>
+        <div class="hizli-label">BT Destek</div>
+      </a>
+      <a class="hizli-item" href="#">
+        <div class="hizli-icon">👤</div>
+        <div class="hizli-label">Rehber</div>
+      </a>
+      <a class="hizli-item" href="#">
+        <div class="hizli-icon">🔒</div>
+        <div class="hizli-label">Güvenlik</div>
+      </a>
+      <a class="hizli-item" href="#">
+        <div class="hizli-icon">🌐</div>
+        <div class="hizli-label">Kurumsal VPN</div>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<script>
+// Saat
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('clock').textContent = h + ':' + m;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// Tarih
+const days = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+const months = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+const now = new Date();
+document.getElementById('heroDate').textContent = now.getDate() + ' ' + months[now.getMonth()] + ' ' + days[now.getDay()];
+
+// Duyuru detay verileri
+const duyurular = [
+  {
+    cat: 'POLİTİKA', catClass: '', meta: '22 Nis 2026 · 4 dk okuma',
+    title: 'Yeni KVKK uyum prosedürü yürürlüğe giriyor',
+    body: 'Tüm operasyon birimleri için güncellenen veri işleme adımları 1 Mayıs itibarıyla zorunlu hale geliyor.<br><br>Lütfen konuyla ilgili ekibinizle birlikte gözden geçirme toplantısı planlayın. Sorularınız için Uyum ekibine dahili 4412\'den ulaşabilirsiniz.'
+  },
+  {
+    cat: 'SİSTEM', catClass: 'sistem', meta: '21 Nis 2026 · 2 dk okuma',
+    title: 'Core bankacılık bakım penceresi — Pazar 02:00–04:00',
+    body: 'Pazar gecesi 02:00–04:00 arasında core bankacılık sistemleri bakım moduna alınacaktır.<br><br>Bu süre zarfında işlem yapamazsınız. Acil durumlar için nöbet hattını arayın: 0800 XXX XXXX.'
+  },
+  {
+    cat: 'İK', catClass: 'ik', meta: '19 Nis 2026 · 3 dk okuma',
+    title: 'Mayıs dönemi performans görüşmeleri takvimi',
+    body: 'Mayıs ayı performans görüşme takvimi açıklandı. Yöneticiniz sizinle birebir toplantı için iletişime geçecektir.<br><br>Görüşmeler 5–16 Mayıs tarihleri arasında gerçekleştirilecektir.'
+  },
+  {
+    cat: 'ETKİNLİK', catClass: 'etkinlik', meta: '17 Nis 2026 · 1 dk okuma',
+    title: 'Tombank Teknoloji Günü — kayıtlar açık',
+    body: '3 Mayıs\'ta düzenlenecek Tombank Teknoloji Günü için kayıtlar açıldı. AI, dijital bankacılık ve siber güvenlik oturumları yer alacak.<br><br>Kayıt için İK portalını ziyaret edin.'
+  }
+];
+
+function selectDuyuru(el, idx) {
+  document.querySelectorAll('.duyuru-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  const d = duyurular[idx];
+  document.getElementById('detailCat').textContent = d.cat;
+  document.getElementById('detailCat').className = 'duyuru-cat ' + d.catClass;
+  document.getElementById('detailMeta').textContent = d.meta;
+  document.getElementById('detailTitle').textContent = d.title;
+  document.getElementById('detailBody').innerHTML = d.body;
+}
+
+function filterDuyuru(cat, btn) {
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.duyuru-item').forEach(item => {
+    if (cat === 'tumu' || item.dataset.cat === cat) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+function vote(el, pct) {
+  document.querySelectorAll('.anket-opt').forEach(o => o.classList.remove('voted'));
+  el.classList.add('voted');
+}
+</script>
+</body>
+</html>
